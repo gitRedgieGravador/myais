@@ -1,101 +1,102 @@
 <template>
-  <v-container>
+<v-container>
     <v-card>
-      <v-toolbar color="primary">
-        <center>
-          <h1>CREATE POST</h1>
-        </center>
-      </v-toolbar>
-      <hr>
-      <div class="c-width">
-        <v-row>
-          <v-textarea
-            outlined
-            name="input-7-4"
-            label="Title"
-            rows="1"
-            v-model="title"
-          />
-        </v-row>
-        <v-row>
-          <v-textarea
-            outlined
-            name="input-7-4"
-            label="Content"
-            rows="3"
-            v-model="content"
-          />
-        </v-row>
-        <v-row>
-          <router-link :to="'/'">
-            <v-btn large block color="primary" v-on:click="submit">
-              <h1>SUBMIT</h1>
-            </v-btn>
-          </router-link>
-        </v-row>
-        <br>
-      </div>
+        <v-toolbar color="primary">
+            <center>
+                <h1>CREATE POST</h1>
+            </center>
+        </v-toolbar>
+        <hr>
+        <div class="c-width">
+            <v-row>
+                <v-textarea outlined name="input-7-4" label="Title" rows="1" v-model="title" />
+            </v-row>
+            <v-row>
+                <v-textarea outlined name="input-7-4" label="Content" rows="3" v-model="content" />
+            </v-row>
+            <v-row>
+                <v-btn large block color="primary" v-on:click="submit">
+                    <h1>SUBMIT</h1>
+                </v-btn>
+            </v-row>
+            <br>
+        </div>
     </v-card>
-  </v-container>
+</v-container>
 </template>
+
 <script>
 import axios from "axios";
+import router from '@/router';
 export default {
-  name: "create",
-  props: {
-    id: String
-  },
-  data() {
-    return {
-      title: "",
-      content: "",
-      isUpdate: false
-    };
-  },
-  beforeMount() {
-    var ref = window.location.href;
-    if (ref.includes("http://localhost:8080/update")) {
-      this.isUpdate = true;
-      let url = `http://localhost:3000/get-data/${this.id}`;
-      axios.post(url).then(response => {
-        /* eslint-disable */
-        this.title = response.data.title
-        this.content = response.data.content
-      });
+    name: "create",
+    props: {
+        id: String
+    },
+    data() {
+        return {
+            title: "",
+            content: "",
+            isUpdate: false
+        };
+    },
+    beforeMount() {
+        var ref = window.location.href;
+        if (ref.includes("http://localhost:8080/update")) {
+            this.isUpdate = true;
+            let url = `http://localhost:3000/get-data/${this.id}`;
+            axios.post(url).then(response => {
+                this.title = response.data.title
+                this.content = response.data.content
+            });
+        }
+    },
+    methods: {
+        submit() {
+            if (this.isUpdate) {
+                let url = `http://localhost:3000/update/${this.id}`;
+                
+                axios
+                    .post(url, {
+                        id:this.id,
+                        title: this.title,
+                        content: this.content
+                    })
+                    .then(res => {
+                        this.isUpdate = false;
+                        router.push({
+                            path: '/'
+                        })
+                    });
+            } else {
+                let url = `http://localhost:3000/create`;
+                axios
+                    .put(url, {
+                        title: this.title,
+                        content: this.content
+                    })
+                    .then(res => {
+                        this.isUpdate = false;
+                        router.push({
+                            path: '/'
+                        })
+                    });
+            }
+        }
     }
-  },
-  methods: {
-    submit() {
-      if (this.isUpdate) {
-        let url = `http://localhost:3000/update/${this.id}`;
-        axios
-          .post(url, { title: this.title, content: this.content })
-          .then(res => {
-            /* eslint-disable */
-            console.log(res.data);
-          });
-      } else {
-        let url = `http://localhost:3000/create`;
-        axios
-          .put(url, { title: this.title, content: this.content })
-          .then(res => {
-            /* eslint-disable */
-            console.log(res.data);
-          });
-      }
-    }
-  }
 };
 </script>
+
 <style scoped>
 .c-width {
-  position: relative;
-  padding-top: 5%;
-  width: 90%;
-  margin: auto;
+    position: relative;
+    padding-top: 5%;
+    width: 90%;
+    margin: auto;
 }
+
 v-container {
-  position: relative;
-  top: 5%;
+    position: relative;
+    top: 5%;
 }
 </style>

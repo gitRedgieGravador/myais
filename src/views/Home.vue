@@ -58,13 +58,10 @@ export default {
       ]
     };
   },
-  mounted(){
-    console.log("home")
+  beforeMount(){
     let url = `http://localhost:3000/get-data/all`
     axios.get(url).then(response =>{
       this.posts = response.data
-      /* eslint-disable */
-      console.log(response.data)
     })
   }
 };
