@@ -18,6 +18,12 @@ export default new Router({
       path: '/create',
       name: 'create',
       component: Create
+    },
+    {
+      path: '/update/:id',
+      name: 'update',
+      component: Create,
+      props: true
     }
   ]
 })

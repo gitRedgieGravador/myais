@@ -4,14 +4,14 @@
       <span>Redgie Gravador</span>
     </v-toolbar-title>
     <v-spacer></v-spacer>
-    <v-btn>
-      <span>My App</span>
-    </v-btn>
+    <router-link :to="'/'">
+      <v-btn>
+        <span>Home</span>
+      </v-btn>
+    </router-link>
   </v-app-bar>
 </template>
 <script>
-export default {
-    
-}
+export default {};
 </script>
 

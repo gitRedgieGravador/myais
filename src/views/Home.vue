@@ -1,12 +1,20 @@
 <template>
   <v-container>
-    <v-row>
-      <v-col class="text-left"><h2>Posts</h2></v-col>
-      <v-col class="text-right"><router-link :to="'/create'"><v-btn large color="primary">Create</v-btn></router-link> </v-col>
-    </v-row>
+    <v-toolbar color="info">
+      <v-row>
+        <v-col class="text-left">
+          <h2>Posts</h2>
+        </v-col>
+        <v-col class="text-right">
+          <router-link :to="'/create'">
+            <v-btn large color="primary">Create</v-btn>
+          </router-link>
+        </v-col>
+      </v-row>
+    </v-toolbar>
     <center>
       <v-card>
-        <v-simple-table fixed-header class="mylimit">
+        <v-simple-table fixed-header height="500px">
           <template v-slot:default>
             <thead>
               <tr>
@@ -26,7 +34,9 @@
                 <td class="text-left">{{ item.title }}</td>
                 <td class="text-center">{{ item.content }}</td>
                 <td class="text-right">
-                  <v-btn color="success">Update</v-btn>
+                  <router-link :to="'/update/'+item.id">
+                    <v-btn color="primary">Update</v-btn>
+                  </router-link>
                   <v-btn color="error">Delete</v-btn>
                 </td>
               </tr>
@@ -40,38 +50,22 @@
 
 
 <script>
+import axios from 'axios'
 export default {
   data() {
     return {
       posts: [
-        { id: 1, title: "Hello", content: "My content " },
-        { id: 1, title: "Hello", content: "My content " },
-        { id: 1, title: "Hello", content: "My content " },
-        { id: 1, title: "Hello", content: "My content " },
-        { id: 1, title: "Hello", content: "My content " },
-        { id: 1, title: "Hello", content: "My content " },
-        { id: 1, title: "Hello", content: "My content " },
-        { id: 1, title: "Hello", content: "My content " },
-        { id: 1, title: "Hello", content: "My content " },
-        { id: 1, title: "Hello", content: "My content " },
-        { id: 1, title: "Hello", content: "My content " },
-        { id: 1, title: "Hello", content: "My content " },
-        { id: 1, title: "Hello", content: "My content " },
-        { id: 1, title: "Hello", content: "My content " },
-        { id: 1, title: "Hello", content: "My content " },
-        { id: 1, title: "Hello", content: "My content " },
-        { id: 1, title: "Hello", content: "My content " },
-        { id: 1, title: "Hello", content: "My content " },
-        { id: 1, title: "Hello", content: "My content " },
-        { id: 1, title: "Hello", content: "My content " }
-        ]
+      ]
     };
+  },
+  mounted(){
+    console.log("home")
+    let url = `http://localhost:3000/get-data/all`
+    axios.get(url).then(response =>{
+      this.posts = response.data
+      /* eslint-disable */
+      console.log(response.data)
+    })
   }
 };
 </script>
-<style scoped>
-.mylimit {
-  max-height: 500px;
-}
-</style>
-
