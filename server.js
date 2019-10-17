@@ -23,18 +23,23 @@ var list = []
 app.use(cors())
 app.post('/get-data/:id', function(req, res) {
     let id = req.params.id;
-    for (let i = 0; i < list.length; ++i) {
-        if (id == list[i].id)
-            res.send(list[i])
-    }
+    let statement = `SELECT * FROM tblpost WHERE IDPost = ${id}`
+    connection.query(statement, function(err, result, fields) {
+        if (err) throw err
+
+        let con = { IDPost: result[0].IDPost, Title: result[0].Title, Content: result[0].Content }
+        res.send(con)
+        console.log(con)
+    })
 })
 app.post('/update/:id', function(req, res) {
     req.on('data', function(data) {
         let datai = JSON.parse(data);
-        for (let i = 0; i < list.length; ++i) {
-            if (datai.id == list[i].id)
-                list[i] = { id: datai.id, title: datai.title, content: datai.content }
-        }
+        let id = req.params.id
+        let query = `UPDATE tblpost SET Title='${datai.title}',Content='${datai.content}' WHERE IDPost = ${id}`
+        connection.query(query, function(err, result, fields) {
+            if (err) throw err
+        })
     })
     res.send("updated")
 
@@ -45,26 +50,27 @@ app.put('/create', function(req, res) {
 
         let title = data.title
         let content = data.content
-        connection.connect()
+            //connection.connect()
         let statement = `INSERT INTO tblpost(Title, Content) VALUES ('${title}','${content}')`
         connection.query(statement, function(err) {
             if (err) throw err
         })
-        connection.end()
-
     })
     res.send("saved")
 })
 
 app.get('/get-data/all', function(req, res) {
-    connection.connect()
     let statement = `SELECT * FROM tblpost WHERE 1`
+
     connection.query(statement, function(err, result, fields) {
         if (err) throw err
-        console.log(result);
+        var con = []
+        for (let i = 0; i < result.length; ++i) {
+            con.push({ IDPost: result[i].IDPost, Title: result[i].Title, Content: result[i].Content })
+        }
+        res.send(con)
+        console.log(con)
     })
-    connection.end()
-    res.send(list)
 })
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`))

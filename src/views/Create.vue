@@ -46,8 +46,8 @@ export default {
             this.isUpdate = true;
             let url = `http://localhost:3000/get-data/${this.id}`;
             axios.post(url).then(response => {
-                this.title = response.data.title
-                this.content = response.data.content
+                this.title = response.data.Title
+                this.content = response.data.Content
             });
         }
     },

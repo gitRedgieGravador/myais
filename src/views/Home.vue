@@ -30,14 +30,14 @@
               </tr>
             </thead>
             <tbody>
-              <tr v-for="item in posts" :key="item.id">
-                <td class="text-left">{{ item.title }}</td>
-                <td class="text-center">{{ item.content }}</td>
+              <tr v-for="item in posts" :key="item.IDPost">
+                <td class="text-left">{{ item.Title }}</td>
+                <td class="text-center">{{ item.Content }}</td>
                 <td class="text-right">
-                  <router-link :to="'/update/'+item.id">
+                  <router-link :to="'/update/'+item.IDPost">
                     <v-btn color="primary">Update</v-btn>
                   </router-link>
-                  <v-btn color="error">Delete</v-btn>
+                  <v-btn color="error" :to="'/delete/'+item.IDPost">Delete</v-btn>
                 </td>
               </tr>
             </tbody>
@@ -61,7 +61,9 @@ export default {
   beforeMount(){
     let url = `http://localhost:3000/get-data/all`
     axios.get(url).then(response =>{
-      this.posts = response.data
+      this.posts = response.data;
+      //this.posts = JSON.parse(response.data)
+      console.log(this.posts)
     })
   }
 };
