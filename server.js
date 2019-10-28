@@ -10,15 +10,6 @@ var connection = mysql.createConnection({
     database: 'mypost'
 })
 
-// connection.connect()
-
-// connection.query('SELECT 1 + 1 AS solution', function(err, rows, fields) {
-//     if (err) throw err
-
-//     console.log('The solution is: ', rows[0].solution)
-// })
-
-// connection.end()
 var list = []
 app.use(cors())
 app.post('/get-data/:id', function(req, res) {
@@ -71,6 +62,17 @@ app.get('/get-data/all', function(req, res) {
         res.send(con)
         console.log(con)
     })
+})
+
+app.delete('/delete/:id', function(req, res) {
+    let statement = `DELETE FROM tblpost WHERE IDPost = ${req.params.id}`
+    console.log("enter delete app")
+    connection.query(statement, 1, (error, results, fields) => {
+        if (error)
+            return console.error(error.message);
+
+        res.send(req.params.id)
+    });
 })
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`))

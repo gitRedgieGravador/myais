@@ -37,7 +37,7 @@
                   <router-link :to="'/update/'+item.IDPost">
                     <v-btn color="primary">Update</v-btn>
                   </router-link>
-                  <v-btn color="error" :to="'/delete/'+item.IDPost">Delete</v-btn>
+                  <v-btn color="error" v-on:click="deletei(item.IDPost)">Delete</v-btn>
                 </td>
               </tr>
             </tbody>
@@ -50,21 +50,30 @@
 
 
 <script>
-import axios from 'axios'
+import axios from "axios";
 export default {
   data() {
     return {
-      posts: [
-      ]
+      posts: []
     };
   },
-  beforeMount(){
-    let url = `http://localhost:3000/get-data/all`
-    axios.get(url).then(response =>{
+  beforeMount() {
+    let url = `http://localhost:3000/get-data/all`;
+    axios.get(url).then(response => {
       this.posts = response.data;
-      //this.posts = JSON.parse(response.data)
-      console.log(this.posts)
-    })
+    });
+  },
+  methods: {
+    deletei(id) {
+      let url = `http://localhost:3000/delete/${id}`;
+      axios.delete(url).then(response => {
+        for (let i = 0; i < this.posts.length; ++i) {
+          if (this.posts[i].IDPost == response.data) {
+            this.posts.splice(i, 1);
+          }
+        }
+      });
+    }
   }
 };
 </script>

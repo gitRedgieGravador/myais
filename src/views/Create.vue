@@ -27,7 +27,6 @@
 
 <script>
 import axios from "axios";
-import router from '@/router';
 export default {
     name: "create",
     props: {
@@ -64,8 +63,8 @@ export default {
                     })
                     .then(res => {
                         this.isUpdate = false;
-                        router.push({
-                            path: '/'
+                        this.$router.push({
+                            path: '/home'
                         })
                     });
             } else {
@@ -78,7 +77,7 @@ export default {
                     .then(res => {
                         this.isUpdate = false;
                         router.push({
-                            path: '/'
+                            path: '/home'
                         })
                     });
             }
