@@ -9,10 +9,18 @@
           <div>
             <v-row>
               <v-col class="text-right">
-                <v-btn text>New Diary</v-btn>
+                <v-btn text color="primary">
+                  <span>
+                    <v-icon>mdi-file-document-edit</v-icon>
+                  </span>New Diary
+                </v-btn>
               </v-col>
               <v-col class="text-left">
-                <v-btn text>Started</v-btn>
+                <v-btn text color="rgb(179, 179, 0)">
+                  <span>
+                    <v-icon>mdi-star</v-icon>
+                  </span>Started
+                </v-btn>
               </v-col>
             </v-row>
           </div>
@@ -22,23 +30,28 @@
         <div v-for="(item, i) in posts" :key="i">
           <br>
           <v-card height="500" elevation="5">
-            <h1>{{item.Title}}</h1>
+            <v-img class="white--text align-end" height="200px" src="@/assets/yes.png">
+              <v-card-title>
+                <h1>{{item.Title}}</h1>
+              </v-card-title>
+            </v-img>
+
             <p>{{item.Content}}</p>
             <v-footer absolute class="font-weight-medium">
               <v-row>
                 <v-col>
-                  <v-list-item link>
-                    <v-list-item-content>
-                      <v-list-item-title class="title">Delete Diary</v-list-item-title>
-                    </v-list-item-content>
-                  </v-list-item>
+                  <v-btn text block color="error">
+                    <span>
+                      <v-icon>mdi-file-document-box-remove</v-icon>
+                    </span>Delete Diary
+                  </v-btn>
                 </v-col>
                 <v-col>
-                  <v-list-item link>
-                    <v-list-item-content>
-                      <v-list-item-title class="title">Edit Diary</v-list-item-title>
-                    </v-list-item-content>
-                  </v-list-item>
+                  <v-btn text block color="success" @click="togoUpdate(item.IDPost)">
+                    <span>
+                      <v-icon>mdi-file-document-edit</v-icon>
+                    </span>Edit Diary
+                  </v-btn>
                 </v-col>
               </v-row>
             </v-footer>
@@ -49,6 +62,7 @@
     </center>
   </div>
 </template>
+
 <script>
 import axios from "axios";
 export default {
@@ -64,9 +78,15 @@ export default {
     axios.get(url).then(response => {
       this.posts = response.data;
     });
+  },
+  methods: {
+    gotoUpdate(id) {//stops here
+      this.$router.pust({ path: "/update"});
+    }
   }
 };
 </script>
+
 <style scoped>
 #cover {
   background-image: url("~@/assets/cover.png");
@@ -74,6 +94,7 @@ export default {
   background-size: cover;
   font-family: verdana;
 }
+
 .profile {
   position: relative;
   border: solid 1px black;
@@ -81,6 +102,7 @@ export default {
   margin-top: -150px;
   margin-left: -600px;
 }
+
 .pp-name {
   position: relative;
   margin-top: -150px;
@@ -89,6 +111,7 @@ export default {
   -webkit-text-stroke-width: 2px;
   -webkit-text-stroke-color: black;
 }
+
 .main {
   width: 70%;
 }
