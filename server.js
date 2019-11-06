@@ -17,7 +17,6 @@ app.post('/get-data/:id', function(req, res) {
     let statement = `SELECT * FROM tblpost WHERE IDPost = ${id}`
     connection.query(statement, function(err, result, fields) {
         if (err) throw err
-
         let con = { IDPost: result[0].IDPost, Title: result[0].Title, Content: result[0].Content }
         res.send(con)
         console.log(con)
@@ -41,7 +40,7 @@ app.put('/create', function(req, res) {
 
         let title = data.title
         let content = data.content
-            //connection.connect()
+
         let statement = `INSERT INTO tblpost(Title, Content) VALUES ('${title}','${content}')`
         connection.query(statement, function(err) {
             if (err) throw err
@@ -52,7 +51,6 @@ app.put('/create', function(req, res) {
 
 app.get('/get-data/all', function(req, res) {
     let statement = `SELECT * FROM tblpost WHERE 1`
-
     connection.query(statement, function(err, result, fields) {
         if (err) throw err
         var con = []

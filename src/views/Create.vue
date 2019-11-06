@@ -53,8 +53,7 @@ export default {
     methods: {
         submit() {
             if (this.isUpdate) {
-                let url = `http://localhost:3000/update/${this.id}`;
-                
+                let url = `http://localhost:3000/update/${this.id}`; 
                 axios
                     .post(url, {
                         id:this.id,
@@ -76,7 +75,7 @@ export default {
                     })
                     .then(res => {
                         this.isUpdate = false;
-                        router.push({
+                        this.$router.push({
                             path: '/home'
                         })
                     });

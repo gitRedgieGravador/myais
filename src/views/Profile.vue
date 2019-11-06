@@ -1,0 +1,95 @@
+<template>
+  <div>
+    <center>
+      <div class="main">
+        <v-card>
+          <div id="cover"></div>
+          <img src="@/assets/person.png" class="profile">
+          <h1 class="pp-name">Redgie Gravador</h1>
+          <div>
+            <v-row>
+              <v-col class="text-right">
+                <v-btn text>New Diary</v-btn>
+              </v-col>
+              <v-col class="text-left">
+                <v-btn text>Started</v-btn>
+              </v-col>
+            </v-row>
+          </div>
+          <br>
+        </v-card>
+        <hr>
+        <div v-for="(item, i) in posts" :key="i">
+          <br>
+          <v-card height="500" elevation="5">
+            <h1>{{item.Title}}</h1>
+            <p>{{item.Content}}</p>
+            <v-footer absolute class="font-weight-medium">
+              <v-row>
+                <v-col>
+                  <v-list-item link>
+                    <v-list-item-content>
+                      <v-list-item-title class="title">Delete Diary</v-list-item-title>
+                    </v-list-item-content>
+                  </v-list-item>
+                </v-col>
+                <v-col>
+                  <v-list-item link>
+                    <v-list-item-content>
+                      <v-list-item-title class="title">Edit Diary</v-list-item-title>
+                    </v-list-item-content>
+                  </v-list-item>
+                </v-col>
+              </v-row>
+            </v-footer>
+          </v-card>
+          <br>
+        </div>
+      </div>
+    </center>
+  </div>
+</template>
+<script>
+import axios from "axios";
+export default {
+  name: "profile",
+  data() {
+    return {
+      posts: [],
+      background: "primary"
+    };
+  },
+  beforeMount() {
+    let url = `http://localhost:3000/get-data/all`;
+    axios.get(url).then(response => {
+      this.posts = response.data;
+    });
+  }
+};
+</script>
+<style scoped>
+#cover {
+  background-image: url("~@/assets/cover.png");
+  height: 300px;
+  background-size: cover;
+  font-family: verdana;
+}
+.profile {
+  position: relative;
+  border: solid 1px black;
+  border-radius: 50%;
+  margin-top: -150px;
+  margin-left: -600px;
+}
+.pp-name {
+  position: relative;
+  margin-top: -150px;
+  color: white;
+  font-size: 45px;
+  -webkit-text-stroke-width: 2px;
+  -webkit-text-stroke-color: black;
+}
+.main {
+  width: 70%;
+}
+</style>
