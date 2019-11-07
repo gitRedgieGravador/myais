@@ -3,7 +3,7 @@
     <v-card>
         <v-toolbar color="primary">
             <center>
-                <h1>CREATE POST</h1>
+                <h1>{{label}} Diary</h1>
             </center>
         </v-toolbar>
         <hr>
@@ -16,7 +16,8 @@
             </v-row>
             <v-row>
                 <v-btn large block color="primary" v-on:click="submit">
-                    <h1>SUBMIT</h1>
+                    <v-icon>mdi-database</v-icon>
+                    <h1>{{label}} Diary</h1>
                 </v-btn>
             </v-row>
             <br>
@@ -29,20 +30,21 @@
 import axios from "axios";
 export default {
     name: "create",
-    props: {
-        id: String
-    },
     data() {
         return {
             title: "",
             content: "",
-            isUpdate: false
+            isUpdate: false,
+            id:"",
+            label: "Create"
         };
     },
     beforeMount() {
         var ref = window.location.href;
         if (ref.includes("http://localhost:8080/update")) {
             this.isUpdate = true;
+            this.id = this.$route.params.paramsId;
+            this.label = "Update";
             let url = `http://localhost:3000/get-data/${this.id}`;
             axios.post(url).then(response => {
                 this.title = response.data.Title

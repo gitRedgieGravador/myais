@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-card class="mx-auto mt-12 pa-5" width="500">
-      <form @submit="login">
+
         <v-text-field
           v-model="username"
           :error-messages="usernameErrors"
@@ -18,7 +18,7 @@
           @blur="$v.password.$touch()"
         ></v-text-field>
         <v-btn block class="mr-4" type="submit" @click="login">LOG IN</v-btn>
-      </form>
+     
     </v-card>
   </div>
 </template>
@@ -34,8 +34,8 @@ export default {
   },
 
   data: () => ({
-    password: "",
-    username: "",
+    password: "admin",
+    username: "admin",
     show1: false,
     remark: ""
   }),

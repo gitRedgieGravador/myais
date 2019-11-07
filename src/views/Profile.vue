@@ -4,12 +4,18 @@
       <div class="main">
         <v-card>
           <div id="cover"></div>
-          <img src="@/assets/person.png" class="profile">
-          <h1 class="pp-name">Redgie Gravador</h1>
+          <v-row>
+            <v-col>
+              <img src="@/assets/person.png" class="profile" />
+            </v-col>
+            <v-col>
+              <h1 class="pp-name">Redgie Gravador</h1>
+            </v-col>
+          </v-row>
           <div>
             <v-row>
               <v-col class="text-right">
-                <v-btn text color="primary">
+                <v-btn text color="primary" @click="gotoCom('create')">
                   <span>
                     <v-icon>mdi-file-document-edit</v-icon>
                   </span>New Diary
@@ -24,14 +30,28 @@
               </v-col>
             </v-row>
           </div>
-          <br>
+          <br />
         </v-card>
-        <hr>
+        <hr />
         <div v-for="(item, i) in posts" :key="i">
-          <br>
+          <br />
           <v-card height="500" elevation="5">
             <v-img class="white--text align-end" height="200px" src="@/assets/yes.png">
               <v-card-title>
+                <v-icon
+                  v-if="!item.Stared"
+                  class="pointer"
+                  size="50"
+                  color="white"
+                  @click="starthis(item.IDPost)"
+                >mdi-star-outline</v-icon>
+                <v-icon
+                  v-if="item.Stared"
+                  class="pointer"
+                  size="50"
+                  color="yellow"
+                  @click="starthis(item.IDPost)"
+                >mdi-star</v-icon>
                 <h1>{{item.Title}}</h1>
               </v-card-title>
             </v-img>
@@ -56,7 +76,7 @@
               </v-row>
             </v-footer>
           </v-card>
-          <br>
+          <br />
         </div>
       </div>
     </center>
@@ -80,8 +100,20 @@ export default {
     });
   },
   methods: {
-    gotoUpdate(id) {//stops here
-      this.$router.pust({ path: "/update"});
+    togoUpdate(id) {
+      this.$router.push({ path: "/update/" + id });
+    },
+    gotoCom(pathname) {
+      this.$router.push({ name: pathname });
+    },
+    starthis(id) {
+      let url = `http://localhost:3000/star/${id}`;
+      axios.put(url).then(response => {
+        alert(response.data.status)
+        if (response.data.status) {
+          
+        }
+      });
     }
   }
 };
@@ -100,12 +132,11 @@ export default {
   border: solid 1px black;
   border-radius: 50%;
   margin-top: -150px;
-  margin-left: -600px;
 }
 
 .pp-name {
   position: relative;
-  margin-top: -150px;
+  margin-top: -100px;
   color: white;
   font-size: 45px;
   -webkit-text-stroke-width: 2px;
@@ -114,5 +145,8 @@ export default {
 
 .main {
   width: 70%;
+}
+.pointer {
+  cursor: pointer;
 }
 </style>
