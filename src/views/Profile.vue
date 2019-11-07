@@ -43,7 +43,7 @@
                   class="pointer"
                   size="50"
                   color="white"
-                  @click="starthis(item.IDPost)"
+                  @click="starthis(item.IDPost);item.Stared = !item.Stared"
                 >mdi-star-outline</v-icon>
                 <v-icon
                   v-if="item.Stared"
