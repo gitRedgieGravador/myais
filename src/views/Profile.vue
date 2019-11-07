@@ -1,6 +1,6 @@
 <template>
   <div>
-    <center>
+    <!-- <center>
       <div class="main">
         <v-card>
           <div id="cover"></div>
@@ -43,7 +43,7 @@
                   class="pointer"
                   size="50"
                   color="white"
-                  @click="starthis(item.IDPost);item.Stared = !item.Stared"
+                  @click="starthis(item.IDPost)"
                 >mdi-star-outline</v-icon>
                 <v-icon
                   v-if="item.Stared"
@@ -79,41 +79,28 @@
           <br />
         </div>
       </div>
-    </center>
+    </center>-->
+    <Home :key="forceUpdate" v-on:starthis="joke"/>
   </div>
 </template>
 
 <script>
 import axios from "axios";
+import Home from "./Home.vue";
 export default {
   name: "profile",
+  components: {
+    Home
+  },
   data() {
     return {
-      posts: [],
-      background: "primary"
+      forceUpdate: 0
     };
   },
-  beforeMount() {
-    let url = `http://localhost:3000/get-data/all`;
-    axios.get(url).then(response => {
-      this.posts = response.data;
-    });
-  },
   methods: {
-    togoUpdate(id) {
-      this.$router.push({ path: "/update/" + id });
-    },
-    gotoCom(pathname) {
-      this.$router.push({ name: pathname });
-    },
-    starthis(id) {
-      let url = `http://localhost:3000/star/${id}`;
-      axios.put(url).then(response => {
-        alert(response.data.status)
-        if (response.data.status) {
-          
-        }
-      });
+    joke() {
+      alert("jkdfhsdjkfh");
+      this.forceUpdate += 1;
     }
   }
 };

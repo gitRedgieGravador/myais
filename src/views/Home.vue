@@ -1,51 +1,84 @@
 <template>
-  <v-container>
-    <v-toolbar color="info">
-      <v-row>
-        <v-col class="text-left">
-          <h2>Posts</h2>
-        </v-col>
-        <v-col class="text-right">
-          <router-link :to="'/create'">
-            <v-btn large color="primary">Create</v-btn>
-          </router-link>
-        </v-col>
-      </v-row>
-    </v-toolbar>
-    <center>
+  <center>
+    <div class="main">
       <v-card>
-        <v-simple-table fixed-header height="500px">
-          <template v-slot:default>
-            <thead>
-              <tr>
-                <th class="text-left">
-                  <h2>Title</h2>
-                </th>
-                <th class="text-center">
-                  <h2>Content</h2>
-                </th>
-                <th class="text-right">
-                  <h2>Action</h2>
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="item in posts" :key="item.IDPost">
-                <td class="text-left">{{ item.Title }}</td>
-                <td class="text-center">{{ item.Content }}</td>
-                <td class="text-right">
-                  <router-link :to="'/update/'+item.IDPost">
-                    <v-btn color="primary">Update</v-btn>
-                  </router-link>
-                  <v-btn color="error" v-on:click="deletei(item.IDPost)">Delete</v-btn>
-                </td>
-              </tr>
-            </tbody>
-          </template>
-        </v-simple-table>
+        <div id="cover"></div>
+        <v-row>
+          <v-col>
+            <img src="@/assets/person.png" class="profile">
+          </v-col>
+          <v-col>
+            <h1 class="pp-name">Redgie Gravador</h1>
+          </v-col>
+        </v-row>
+        <div>
+          <v-row>
+            <v-col class="text-right">
+              <v-btn text color="primary" @click="gotoCom('create')">
+                <span>
+                  <v-icon>mdi-file-document-edit</v-icon>
+                </span>New Diary
+              </v-btn>
+            </v-col>
+            <v-col class="text-left">
+              <v-btn text color="rgb(179, 179, 0)">
+                <span>
+                  <v-icon>mdi-star</v-icon>
+                </span>Started
+              </v-btn>
+            </v-col>
+          </v-row>
+        </div>
+        <br>
       </v-card>
-    </center>
-  </v-container>
+      <hr>
+      <div v-for="(item, i) in posts" :key="i">
+        <br>
+        <v-card height="500" elevation="5">
+          <v-img class="white--text align-end" height="200px" src="@/assets/yes.png">
+            <v-card-title>
+              <v-icon
+                v-if="!item.Stared"
+                class="pointer"
+                size="50"
+                color="white"
+                @click="starthis(item.IDPost)"
+              >mdi-star-outline</v-icon>
+              <v-icon
+                v-if="item.Stared"
+                class="pointer"
+                size="50"
+                color="yellow"
+                
+              >mdi-star</v-icon>
+              <h1>{{item.Title}}</h1>
+            </v-card-title>
+          </v-img>
+
+          <p>{{item.Content}}</p>
+          <v-footer absolute class="font-weight-medium">
+            <v-row>
+              <v-col>
+                <v-btn text block color="error">
+                  <span>
+                    <v-icon>mdi-file-document-box-remove</v-icon>
+                  </span>Delete Diary
+                </v-btn>
+              </v-col>
+              <v-col>
+                <v-btn text block color="success" @click="togoUpdate(item.IDPost)">
+                  <span>
+                    <v-icon>mdi-file-document-edit</v-icon>
+                  </span>Edit Diary
+                </v-btn>
+              </v-col>
+            </v-row>
+          </v-footer>
+        </v-card>
+        <br>
+      </div>
+    </div>
+  </center>
 </template>
 
 
@@ -54,7 +87,9 @@ import axios from "axios";
 export default {
   data() {
     return {
-      posts: []
+      forceUpdate: 0,
+      posts: [],
+      background: "primary"
     };
   },
   beforeMount() {
@@ -64,16 +99,53 @@ export default {
     });
   },
   methods: {
-    deletei(id) {
-      let url = `http://localhost:3000/delete/${id}`;
-      axios.delete(url).then(response => {
-        for (let i = 0; i < this.posts.length; ++i) {
-          if (this.posts[i].IDPost == response.data) {
-            this.posts.splice(i, 1);
-          }
+    togoUpdate(id) {
+      this.$router.push({ path: "/update/" + id });
+    },
+    gotoCom(pathname) {
+      this.$router.push({ name: pathname });
+    },
+    starthis(id) {
+      let url = `http://localhost:3000/star/${id}`;
+      axios.put(url).then(response => {
+        if (response.data.status) {
+          //location.reload();
+          forceUpdate += 1;
+          this.$emit('starthis')
         }
       });
     }
   }
 };
 </script>
+<style scoped>
+#cover {
+  background-image: url("~@/assets/cover.png");
+  height: 300px;
+  background-size: cover;
+  font-family: verdana;
+}
+
+.profile {
+  position: relative;
+  border: solid 1px black;
+  border-radius: 50%;
+  margin-top: -150px;
+}
+
+.pp-name {
+  position: relative;
+  margin-top: -100px;
+  color: white;
+  font-size: 45px;
+  -webkit-text-stroke-width: 2px;
+  -webkit-text-stroke-color: black;
+}
+
+.main {
+  width: 70%;
+}
+.pointer {
+  cursor: pointer;
+}
+</style>
