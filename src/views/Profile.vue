@@ -1,91 +1,28 @@
 <template>
   <div>
-    <!-- <center>
-      <div class="main">
-        <v-card>
-          <div id="cover"></div>
-          <v-row>
-            <v-col>
-              <img src="@/assets/person.png" class="profile" />
-            </v-col>
-            <v-col>
-              <h1 class="pp-name">Redgie Gravador</h1>
-            </v-col>
-          </v-row>
-          <div>
-            <v-row>
-              <v-col class="text-right">
-                <v-btn text color="primary" @click="gotoCom('create')">
-                  <span>
-                    <v-icon>mdi-file-document-edit</v-icon>
-                  </span>New Diary
-                </v-btn>
-              </v-col>
-              <v-col class="text-left">
-                <v-btn text color="rgb(179, 179, 0)">
-                  <span>
-                    <v-icon>mdi-star</v-icon>
-                  </span>Started
-                </v-btn>
-              </v-col>
-            </v-row>
-          </div>
-          <br />
-        </v-card>
-        <hr />
-        <div v-for="(item, i) in posts" :key="i">
-          <br />
-          <v-card height="500" elevation="5">
-            <v-img class="white--text align-end" height="200px" src="@/assets/yes.png">
-              <v-card-title>
-                <v-icon
-                  v-if="!item.Stared"
-                  class="pointer"
-                  size="50"
-                  color="white"
-                  @click="starthis(item.IDPost)"
-                >mdi-star-outline</v-icon>
-                <v-icon
-                  v-if="item.Stared"
-                  class="pointer"
-                  size="50"
-                  color="yellow"
-                  @click="starthis(item.IDPost)"
-                >mdi-star</v-icon>
-                <h1>{{item.Title}}</h1>
-              </v-card-title>
-            </v-img>
-
-            <p>{{item.Content}}</p>
-            <v-footer absolute class="font-weight-medium">
-              <v-row>
-                <v-col>
-                  <v-btn text block color="error">
-                    <span>
-                      <v-icon>mdi-file-document-box-remove</v-icon>
-                    </span>Delete Diary
-                  </v-btn>
-                </v-col>
-                <v-col>
-                  <v-btn text block color="success" @click="togoUpdate(item.IDPost)">
-                    <span>
-                      <v-icon>mdi-file-document-edit</v-icon>
-                    </span>Edit Diary
-                  </v-btn>
-                </v-col>
-              </v-row>
-            </v-footer>
-          </v-card>
-          <br />
-        </div>
-      </div>
-    </center>-->
-    <Home :key="forceUpdate" v-on:starthis="joke"/>
+    <v-dialog v-model="dialog" fullscreen hide-overlay transition="dialog-bottom-transition">
+      <template v-slot:activator="{ on }">
+        <v-btn color="primary" dark v-on="on">Open Dialog</v-btn>
+      </template>
+      <v-card>
+        <v-toolbar dark color="primary">
+          <v-btn icon dark @click="dialog = false">
+            <v-icon>mdi-close</v-icon>
+          </v-btn>
+          <v-toolbar-title>Settings</v-toolbar-title>
+          <v-spacer></v-spacer>
+          <v-toolbar-items>
+            <v-btn dark text @click="dialog = false">Save</v-btn>
+          </v-toolbar-items>
+        </v-toolbar>
+      </v-card>
+    </v-dialog>
+    <Home :key="forceUpdate" v-on:InsideMethod="RenderNow"/>
   </div>
 </template>
 
 <script>
-import axios from "axios";
+//import axios from "axios";
 import Home from "./Home.vue";
 export default {
   name: "profile",
@@ -98,8 +35,7 @@ export default {
     };
   },
   methods: {
-    joke() {
-      alert("jkdfhsdjkfh");
+    RenderNow() {
       this.forceUpdate += 1;
     }
   }

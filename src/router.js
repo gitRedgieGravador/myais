@@ -1,8 +1,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Home from './views/Profile.vue'
+import Home from './views/Home.vue'
 import Create from './views/Create.vue'
-//import Login from './views/Login.vue'
+import Stared from './views/Stared.vue'
 //import store from './store'
 
 Vue.use(Router)
@@ -10,8 +10,7 @@ Vue.use(Router)
 export default new Router({
     mode: 'history',
     base: process.env.BASE_URL,
-    routes: [
-        {
+    routes: [{
             path: '/',
             name: 'home',
             component: Home,
@@ -20,6 +19,11 @@ export default new Router({
             path: '/create',
             name: 'create',
             component: Create,
+        },
+        {
+            path: '/stared',
+            name: 'stared',
+            component: Stared,
         },
         {
             path: '/update/:paramsId',

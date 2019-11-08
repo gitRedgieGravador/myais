@@ -21,7 +21,7 @@
               </v-btn>
             </v-col>
             <v-col class="text-left">
-              <v-btn text color="rgb(179, 179, 0)">
+              <v-btn text color="rgb(179, 179, 0)" @click="gotoCom('stared')">
                 <span>
                   <v-icon>mdi-star</v-icon>
                 </span>Started
@@ -32,9 +32,10 @@
         <br>
       </v-card>
       <hr>
+      
       <div v-for="(item, i) in posts" :key="i">
         <br>
-        <v-card height="500" elevation="5">
+        <v-card elevation="5">
           <v-img class="white--text align-end" height="200px" src="@/assets/yes.png">
             <v-card-title>
               <v-icon
@@ -42,24 +43,23 @@
                 class="pointer"
                 size="50"
                 color="white"
-                @click="starthis(item.IDPost)"
+                @click="starthis(item.IDPost);item.Stared = !item.Stared"
               >mdi-star-outline</v-icon>
-              <v-icon
-                v-if="item.Stared"
-                class="pointer"
-                size="50"
-                color="yellow"
-                
-              >mdi-star</v-icon>
+              <v-icon v-if="item.Stared" class="pointer" size="50" color="yellow">mdi-star</v-icon>
               <h1>{{item.Title}}</h1>
             </v-card-title>
           </v-img>
-
-          <p>{{item.Content}}</p>
+          <div class="text-left indent pl-10 pr-10">
+            <br>
+            <p>{{item.Content}}</p>
+          </div>
+          <br>
+          <br>
+          <br>
           <v-footer absolute class="font-weight-medium">
             <v-row>
               <v-col>
-                <v-btn text block color="error">
+                <v-btn text block color="error" @click="deletei(item.IDPost)">
                   <span>
                     <v-icon>mdi-file-document-box-remove</v-icon>
                   </span>Delete Diary
@@ -89,13 +89,20 @@ export default {
     return {
       forceUpdate: 0,
       posts: [],
-      background: "primary"
+      staredDiary: [],
+      background: "primary",
+      staredDialog: false
     };
   },
   beforeMount() {
     let url = `http://localhost:3000/get-data/all`;
     axios.get(url).then(response => {
       this.posts = response.data;
+      for (let i = 0; i < this.posts.length; ++i) {
+        if (this.posts[i].Stared) {
+          this.staredDiary.push(this.posts[i]);
+        }
+      }
     });
   },
   methods: {
@@ -109,9 +116,17 @@ export default {
       let url = `http://localhost:3000/star/${id}`;
       axios.put(url).then(response => {
         if (response.data.status) {
-          //location.reload();
-          forceUpdate += 1;
-          this.$emit('starthis')
+          //ndfknl
+        }
+      });
+    },
+    deletei(id) {
+      let url = `http://localhost:3000/delete/${id}`;
+      axios.delete(url).then(response => {
+        for (let i = 0; i < this.posts.length; ++i) {
+          if (this.posts[i].IDPost == response.data) {
+            this.posts.splice(i, 1);
+          }
         }
       });
     }
@@ -147,5 +162,14 @@ export default {
 }
 .pointer {
   cursor: pointer;
+}
+.indent {
+  text-indent: 50px;
+  text-align: justify;
+}
+.stick {
+  position:sticky;
+  top: 0;
+  z-index: 10;
 }
 </style>

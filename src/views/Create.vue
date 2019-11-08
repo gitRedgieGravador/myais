@@ -65,7 +65,7 @@ export default {
                     .then(res => {
                         this.isUpdate = false;
                         this.$router.push({
-                            path: '/home'
+                            path: '/'
                         })
                     });
             } else {
@@ -78,7 +78,7 @@ export default {
                     .then(res => {
                         this.isUpdate = false;
                         this.$router.push({
-                            path: '/home'
+                            name: 'home'
                         })
                     });
             }

@@ -106,4 +106,20 @@ app.put('/star/:id', function(req, res) {
     });
 
 })
+
+app.post('/back', function(req, res) {
+    let statement = `UPDATE tblposts SET Stared=false WHERE 1`
+    connection.query(statement, (error) => {
+        if (error) {
+            console.log(error.message)
+            res.send({
+                status: false
+            })
+        } else {
+            res.send({
+                status: true
+            })
+        }
+    });
+})
 app.listen(port, () => console.log(`Example app listening on port ${port}!`))
