@@ -59,7 +59,6 @@ export default {
     };
   },
   beforeMount() {
-    console.log("sfdsfsdlk");
     let url = `http://localhost:3000/get-data/all`;
     axios.get(url).then(response => {
       this.posts = response.data;
