@@ -32,7 +32,7 @@
         <br>
       </v-card>
       <hr>
-      
+
       <div v-for="(item, i) in posts" :key="i">
         <br>
         <v-card elevation="5">
@@ -46,8 +46,14 @@
                 @click="starthis(item.IDPost);item.Stared = !item.Stared"
               >mdi-star-outline</v-icon>
               <v-icon v-if="item.Stared" class="pointer" size="50" color="yellow">mdi-star</v-icon>
+
               <h1>{{item.Title}}</h1>
             </v-card-title>
+            <v-card-subtitle class="text-left">
+              <i>
+                <h5 class="c-white">{{new Date(item.DateStamp).toLocaleString()}}</h5>
+              </i>
+            </v-card-subtitle>
           </v-img>
           <div class="text-left indent pl-10 pr-10">
             <br>
@@ -168,8 +174,12 @@ export default {
   text-align: justify;
 }
 .stick {
-  position:sticky;
+  position: sticky;
   top: 0;
   z-index: 10;
+}
+.c-white{
+  color: white;
+  margin-left: 6%;
 }
 </style>
