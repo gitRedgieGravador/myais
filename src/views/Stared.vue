@@ -1,5 +1,5 @@
 <template>
-  <dir>
+  <div>
     <center>
       <v-card min-height="800">
         <v-toolbar class="stick" dark color="primary">
@@ -15,7 +15,7 @@
           <br>
           <h1>No Entry for Stared Diary</h1>
         </div>
-        <di v-else>
+        <div v-else>
           <div v-for="(item, i) in staredDiary" :key="i">
             <br>
             <v-card elevation="5" width="80%">
@@ -43,10 +43,10 @@
               </v-footer>
             </v-card>
           </div>
-        </di>
+        </div>
       </v-card>
     </center>
-  </dir>
+  </div>
 </template>
 <script>
 import axios from "axios";

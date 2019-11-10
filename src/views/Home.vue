@@ -1,6 +1,7 @@
 <template>
   <center>
-    <div class="main">
+    <h1>Stories Of My Life</h1>
+    <v-card id="main">
       <v-card>
         <div id="cover"></div>
         <v-row>
@@ -83,7 +84,7 @@
         </v-card>
         <br>
       </div>
-    </div>
+    </v-card>
   </center>
 </template>
 
@@ -97,7 +98,8 @@ export default {
       posts: [],
       staredDiary: [],
       background: "primary",
-      staredDialog: false
+      staredDialog: false,
+      resized: false
     };
   },
   beforeMount() {
@@ -111,7 +113,30 @@ export default {
       }
     });
   },
+  destroyed() {
+    window.removeEventListener("resize", this.handleResize);
+  },
+  mounted() {
+    window.addEventListener("resize", this.handleResize);
+    this.handleResize();
+  },
   methods: {
+    handleResize() {
+      if (window.innerWidth < 1200) {
+        this.resized = true;
+        this.handleWidth();
+      } else {
+        this.resized = false;
+        this.handleWidth();
+      }
+    },
+    handleWidth(){
+      if (this.resized){
+        document.getElementById('main').style.width = "100%";
+      }else{
+        document.getElementById('main').style.width = "70%";
+      }
+    },
     togoUpdate(id) {
       this.$router.push({ path: "/update/" + id });
     },
@@ -163,7 +188,7 @@ export default {
   -webkit-text-stroke-color: black;
 }
 
-.main {
+#main {
   width: 70%;
 }
 .pointer {
@@ -178,7 +203,7 @@ export default {
   top: 0;
   z-index: 10;
 }
-.c-white{
+.c-white {
   color: white;
   margin-left: 6%;
 }

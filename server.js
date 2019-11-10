@@ -76,7 +76,7 @@ app.put('/create', function(req, res) {
 
 app.get('/get-data/all', function(req, res) {
     try {
-        let statement = `SELECT * FROM tblposts WHERE 1`
+        let statement = `SELECT * FROM tblposts WHERE 1 ORDER BY IDPost Desc`
         connection.query(statement, function(err, result, fields) {
             if (err) throw err
             var con = []
