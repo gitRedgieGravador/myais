@@ -25,7 +25,7 @@
               <v-btn text color="rgb(179, 179, 0)" @click="gotoCom('stared')">
                 <span>
                   <v-icon>mdi-star</v-icon>
-                </span>Started
+                </span>Star
               </v-btn>
             </v-col>
           </v-row>
