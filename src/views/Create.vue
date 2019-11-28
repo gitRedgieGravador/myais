@@ -21,7 +21,7 @@
               <h1>Cancel</h1>
             </v-btn>
           </v-col>
-          <v-col cols="8">
+          <v-col>
             <v-btn large block color="primary" v-on:click="submit">
               <v-icon>mdi-database</v-icon>
               <h1>{{label}} Diary</h1>
