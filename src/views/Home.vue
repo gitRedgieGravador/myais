@@ -6,7 +6,7 @@
         <div id="cover"></div>
         <v-row>
           <v-col>
-            <img src="@/assets/person.png" class="profile">
+            <img src="@/assets/person.png" class="profile" />
           </v-col>
           <v-col>
             <h1 class="pp-name">Redgie Gravador</h1>
@@ -30,12 +30,12 @@
             </v-col>
           </v-row>
         </div>
-        <br>
+        <br />
       </v-card>
-      <hr>
+      <hr />
 
       <div v-for="(item, i) in posts" :key="i">
-        <br>
+        <br />
         <v-card elevation="5">
           <v-img class="white--text align-end" height="200px" src="@/assets/yes.png">
             <v-card-title>
@@ -44,7 +44,7 @@
                 class="pointer"
                 size="50"
                 color="white"
-                @click="starthis(item.IDPost);item.Stared = !item.Stared"
+                @click="starthis(item.IDPost)"
               >mdi-star-outline</v-icon>
               <v-icon v-if="item.Stared" class="pointer" size="50" color="yellow">mdi-star</v-icon>
 
@@ -57,12 +57,12 @@
             </v-card-subtitle>
           </v-img>
           <div class="text-left indent pl-10 pr-10">
-            <br>
+            <br />
             <p>{{item.Content}}</p>
           </div>
-          <br>
-          <br>
-          <br>
+          <br />
+          <br />
+          <br />
           <v-footer absolute class="font-weight-medium">
             <v-row>
               <v-col>
@@ -82,7 +82,7 @@
             </v-row>
           </v-footer>
         </v-card>
-        <br>
+        <br />
       </div>
     </v-card>
   </center>
@@ -103,15 +103,7 @@ export default {
     };
   },
   beforeMount() {
-    let url = `http://localhost:3000/get-data/all`;
-    axios.get(url).then(response => {
-      this.posts = response.data;
-      for (let i = 0; i < this.posts.length; ++i) {
-        if (this.posts[i].Stared) {
-          this.staredDiary.push(this.posts[i]);
-        }
-      }
-    });
+    this.getNow()
   },
   destroyed() {
     window.removeEventListener("resize", this.handleResize);
@@ -121,6 +113,17 @@ export default {
     this.handleResize();
   },
   methods: {
+    getNow() {
+      let url = `http://localhost:3000/get-data/all`;
+      axios.get(url).then(response => {
+        this.posts = response.data;
+        for (let i = 0; i < this.posts.length; ++i) {
+          if (this.posts[i].Stared) {
+            this.staredDiary.push(this.posts[i]);
+          }
+        }
+      });
+    },
     handleResize() {
       if (window.innerWidth < 1200) {
         this.resized = true;
@@ -130,11 +133,11 @@ export default {
         this.handleWidth();
       }
     },
-    handleWidth(){
-      if (this.resized){
-        document.getElementById('main').style.width = "100%";
-      }else{
-        document.getElementById('main').style.width = "70%";
+    handleWidth() {
+      if (this.resized) {
+        document.getElementById("main").style.width = "100%";
+      } else {
+        document.getElementById("main").style.width = "70%";
       }
     },
     togoUpdate(id) {
@@ -147,7 +150,7 @@ export default {
       let url = `http://localhost:3000/star/${id}`;
       axios.put(url).then(response => {
         if (response.data.status) {
-          //ndfknl
+          this.getNow()
         }
       });
     },
