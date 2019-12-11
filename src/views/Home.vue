@@ -66,7 +66,7 @@
           <v-footer absolute class="font-weight-medium">
             <v-row>
               <v-col>
-                <v-btn text block color="error" @click="deletei(item.IDPost)">
+                <v-btn text block color="error" @click="openDelete(item.Title, new Date(item.DateStamp).toLocaleString())">
                   <span>
                     <v-icon>mdi-file-document-box-remove</v-icon>
                   </span>Delete Diary
@@ -85,7 +85,25 @@
         <br />
       </div>
     </v-card>
+    <v-row justify="center">
+    <v-dialog v-model="Deletedialog" persistent max-width="290">
+      <v-card>
+        <v-card-title class="headline">My Day Corfirmation</v-card-title>
+        <v-card-text>
+          <h4>Are you sure you want to delete this diary entry</h4>
+          <h5>Title: {{confirmContent}}</h5>
+          <h5>Date: {{confirmDate}}</h5>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="green darken-1" text @click="Deletedialog = false">Cancel</v-btn>
+          <v-btn color="green darken-1" text @click="deletei(item.IDPost)">Corfirm Delete</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+  </v-row>
   </center>
+  
 </template>
 
 
@@ -99,7 +117,10 @@ export default {
       staredDiary: [],
       background: "primary",
       staredDialog: false,
-      resized: false
+      resized: false,
+      Deletedialog: false,
+      confirmContent: "",
+      confirmDate: ""
     };
   },
   beforeMount() {
@@ -113,6 +134,11 @@ export default {
     this.handleResize();
   },
   methods: {
+    openDelete(cont, date){
+      this.confirmContent = cont
+      this.confirmDate = date
+      this.Deletedialog =  true
+    },
     getNow() {
       let url = `http://localhost:3000/get-data/all`;
       axios.get(url).then(response => {
